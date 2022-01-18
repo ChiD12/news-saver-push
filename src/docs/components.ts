@@ -1,5 +1,12 @@
 export const components = {
   components: {
+    securitySchemes: {
+      ApiKeyAuth: {
+        type: 'apiKey',
+        in: 'header',
+        name: 'Authorization'
+      }
+    },
     schemas: {
       // id model
       userId: {
@@ -59,17 +66,6 @@ export const components = {
         properties: {
           message: {
             $ref: '#/components/schemas/message'
-          },
-          userId: {
-            $ref: '#/components/schemas/userId'
-          },
-          sentFromDeviceId: {
-            $ref: '#/components/schemas/sentFromDeviceId'
-          },
-          token: {
-            type: 'string',
-            example:
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiRGFuaWVsIiwidXNlcklkIjoiNjFkN2M4MzNhMjQ1YzA1NWI2ZjYzYTk3IiwiZGV2aWNlVHlwZSI6ImFuZHJvaWQiLCJleHRlcm5hbERldmljZUlkIjoiMTIzIiwiaWF0IjoxNjQxNzY3NzgxfQ.ALm86bWEahVCarHjwDi6K1g2mX-Uo75TySZUwbUfEP0'
           }
         }
       },
@@ -121,5 +117,10 @@ export const components = {
         }
       }
     }
-  }
+  },
+  security: [
+    {
+      ApiKeyAuth: []
+    }
+  ]
 };

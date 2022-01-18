@@ -1,6 +1,7 @@
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
-import { celebrate, Joi, errors, Segments } from 'celebrate';
+import jwt from 'jsonwebtoken';
+import { errors } from 'celebrate';
 
 require('dotenv').config();
 
@@ -16,17 +17,25 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use((error: any, req: any, res: any, next: any) => {
-  // Bad request error
-  res.status(400);
-  next(error);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(docs));
+
+app.use((req: any, res: any, next: any) => {
+  const { authorization } = req.headers;
+  if (!authorization) return res.status(403).send('A token is required');
+  try {
+    const decoded: any = jwt.verify(authorization, process.env.JWT_KEY!);
+    console.log(decoded);
+    req.body.userId = decoded.userId;
+    req.body.sentFromDeviceId = decoded.externalDeviceId;
+  } catch (err) {
+    return res.status(401).send('Invalid Token');
+  }
+  next();
 });
 
 app.use('/', indexRouter);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(docs));
 app.use(errors());
 app.use((error: any, req: any, res: any, next: any) => {
-  // Bad request error
   res.status(400);
   next(error);
 });
