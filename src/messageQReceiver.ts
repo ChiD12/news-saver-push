@@ -41,7 +41,7 @@ export const articleListener = (deviceRepo: DeviceRepo) => {
 };
 
 export const deviceListener = (deviceRepo: DeviceRepo) => {
-  amqp.connect('amqp://localhost', (error0: any, connection: any) => {
+  amqp.connect(process.env.CLOUDAMQP_URL, (error0: any, connection: any) => {
     if (error0) {
       throw error0;
     }
