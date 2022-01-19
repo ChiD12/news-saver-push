@@ -4,7 +4,7 @@ import { DeviceRepo } from './interfaces/interfaces';
 const amqp = require('amqplib/callback_api');
 
 export const articleListener = (deviceRepo: DeviceRepo) => {
-  amqp.connect(process.env.RMQ, (error0: any, connection: any) => {
+  amqp.connect(process.env.CLOUDAMQP_URL, (error0: any, connection: any) => {
     if (error0) {
       throw error0;
     }
