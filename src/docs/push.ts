@@ -49,5 +49,30 @@ export const pushs = {
         }
       }
     }
+  },
+  '/push/debug': {
+    get: {
+      tags: ['Push'], // operation's tag.
+      description: 'Get all Pushs', // operation's desc.
+      operationId: 'get_push_debug', // unique operation id.
+      parameters: [], // expected params.
+      // expected responses
+      responses: {
+        // response code
+        200: {
+          description: 'Pushs were obtained', // response desc.
+          content: {
+            'application/json': {
+              schema: {
+                type: 'array',
+                items: {
+                  $ref: '#/components/schemas/push'
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 };

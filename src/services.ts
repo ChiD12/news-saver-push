@@ -12,6 +12,10 @@ export const createPushService = (pushRepo: PushRepo, deviceRepo: DeviceRepo): P
     return pushRepo.fetchAllPushs();
   };
 
+  const getPushsFromUser = (userId: string) => {
+    return pushRepo.fetchPushsFromUser(userId);
+  };
+
   const postDevice = (device: DeviceInput) => {
     deviceRepo.insertDevice(device).catch(console.dir);
   };
@@ -20,7 +24,7 @@ export const createPushService = (pushRepo: PushRepo, deviceRepo: DeviceRepo): P
     return deviceRepo.fetchAllDevices();
   };
 
-  return { postPush, getAllPushs, postDevice, getAllDevices };
+  return { postPush, getAllPushs, getPushsFromUser, postDevice, getAllDevices };
 };
 
 export const sendPush = async (message: string, userId: string, deviceRepo: DeviceRepo) => {

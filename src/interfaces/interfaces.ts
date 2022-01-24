@@ -22,22 +22,28 @@ export interface Push {
   message: string;
   userId: string;
   sentFromDeviceId: string;
+  deviceType: string;
+  datePosted: string;
 }
 
 export interface PushInput {
   message: string;
   userId: string;
   sentFromDeviceId: string;
+  deviceType: string;
 }
 
 export interface PushRepo {
   insertPush(push: PushInput): Promise<void>;
   fetchAllPushs(): Promise<Push[]>;
+  fetchPushsFromUser(userId: string): Promise<Push[]>;
 }
 
 export interface PushService {
   postPush(push: PushInput): void;
   getAllPushs(): Promise<Push[]>;
+  getPushsFromUser(userId: string): Promise<Push[]>;
   postDevice(device: DeviceInput): void;
+  getAllDevices(): Promise<Device[]>;
   getAllDevices(): Promise<Device[]>;
 }

@@ -9,5 +9,8 @@ export const deviceSchema = Joi.object({
 export const pushSchema = Joi.object({
   message: Joi.string().required(),
   userId: Joi.string().required(),
-  sentFromDeviceId: Joi.string().required()
+  sentFromDeviceId: Joi.string().required(),
+  deviceType: Joi.string()
+    .valid('android', 'browser')
+    .required()
 });

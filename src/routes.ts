@@ -28,8 +28,14 @@ router.post('/push', celebrate({ [Segments.BODY]: pushSchema }), async (req, res
   next();
 });
 
-router.get('/push', async (req, res, next) => {
+router.get('/push/debug', async (req, res, next) => {
   const allPushs = await service.getAllPushs();
+  res.status(200).json(allPushs);
+  next();
+});
+
+router.get('/push', async (req, res, next) => {
+  const allPushs = await service.getPushsFromUser(req.body.userId);
   res.status(200).json(allPushs);
   next();
 });

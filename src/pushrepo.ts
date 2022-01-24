@@ -10,7 +10,9 @@ export const createPushRepo = (client: MongoClient): PushRepo => {
     const doc = {
       userId: push.userId,
       message: push.message,
-      sentFromDeviceId: push.sentFromDeviceId
+      sentFromDeviceId: push.sentFromDeviceId,
+      deviceType: push.deviceType,
+      datePosted: new Date()
     };
     const result = await articles.insertOne(doc);
     console.log(`A document was upserted with the _id: ${result.insertedId}`);
@@ -23,7 +25,37 @@ export const createPushRepo = (client: MongoClient): PushRepo => {
     const fetchedDocuments = await pushs.find(query).toArray();
 
     const fetchedPushs: Push[] = fetchedDocuments.map((doc: WithId<Document>) => {
-      return { id: doc.id, userId: doc.userId, message: doc.message, sentFromDeviceId: doc.sentFromDeviceId };
+      return {
+        id: doc.id,
+        userId: doc.userId,
+        message: doc.message,
+        sentFromDeviceId: doc.sentFromDeviceId,
+        deviceType: doc.deviceType,
+        datePosted: doc.datePosted.toUTCString()
+      };
+    });
+
+    console.log(fetchedPushs);
+    return fetchedPushs;
+  };
+
+  const fetchPushsFromUser = async (userId: string) => {
+    const database = client.db('news');
+    const pushs = database.collection('push');
+    const query = {
+      userId
+    };
+    const fetchedDocuments = await pushs.find(query).toArray();
+
+    const fetchedPushs: Push[] = fetchedDocuments.map((doc: WithId<Document>) => {
+      return {
+        id: doc.id,
+        userId: doc.userId,
+        message: doc.message,
+        sentFromDeviceId: doc.sentFromDeviceId,
+        deviceType: doc.deviceType,
+        datePosted: doc.datePosted.toUTCString()
+      };
     });
 
     console.log(fetchedPushs);
@@ -44,5 +76,5 @@ export const createPushRepo = (client: MongoClient): PushRepo => {
     return user;
   };
 
-  return { insertPush, fetchAllPushs };
+  return { insertPush, fetchAllPushs, fetchPushsFromUser };
 };
