@@ -1,4 +1,4 @@
-import { MongoClient, WithId, Document } from 'mongodb';
+import { MongoClient, WithId, Document, Sort } from 'mongodb';
 import { Push, PushInput, PushRepo } from './interfaces/interfaces';
 
 export const createPushRepo = (client: MongoClient): PushRepo => {
@@ -22,7 +22,11 @@ export const createPushRepo = (client: MongoClient): PushRepo => {
     const database = client.db('news');
     const pushs = database.collection('push');
     const query = {};
-    const fetchedDocuments = await pushs.find(query).toArray();
+    const sort: Sort = { _id: -1 };
+    const fetchedDocuments = await pushs
+      .find(query)
+      .sort(sort)
+      .toArray();
 
     const fetchedPushs: Push[] = fetchedDocuments.map((doc: WithId<Document>) => {
       return {
@@ -45,7 +49,11 @@ export const createPushRepo = (client: MongoClient): PushRepo => {
     const query = {
       userId
     };
-    const fetchedDocuments = await pushs.find(query).toArray();
+    const sort: Sort = { _id: -1 };
+    const fetchedDocuments = await pushs
+      .find(query)
+      .sort(sort)
+      .toArray();
 
     const fetchedPushs: Push[] = fetchedDocuments.map((doc: WithId<Document>) => {
       return {
